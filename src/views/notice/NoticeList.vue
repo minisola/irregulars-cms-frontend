@@ -3,7 +3,7 @@
     <!-- 列表页面 -->
     <div class="container" v-if="!showEdit">
       <div class="header">
-        <div class="title">图书列表</div>
+        <div class="title">公告列表</div>
       </div>
       <!-- 表格 -->
       <lin-table
@@ -23,8 +23,9 @@
 </template>
 
 <script>
-import book from '@/models/book'
+import notice from '@/models/notice'
 import LinTable from '@/components/base/table/lin-table'
+import dayjs from 'dayjs'
 // import BookEdit from './noticeEdit'
 
 export default {
@@ -34,7 +35,7 @@ export default {
   },
   data() {
     return {
-      tableColumn: [{ prop: 'title', label: '标题' }, { prop: 'create_at', label: '发布时间' }],
+      tableColumn: [{ prop: 'title', label: '标题' }, { prop: 'createTime', label: '发布时间' }],
       tableData: [],
       operate: [],
       showEdit: false,
@@ -43,7 +44,7 @@ export default {
   },
   async created() {
     this.loading = true
-    this.getBooks()
+    this.getNotices()
     this.operate = [{ name: '编辑', func: 'handleEdit', type: 'primary' }, {
       name: '删除',
       func: 'handleDelete',
@@ -53,10 +54,14 @@ export default {
     this.loading = false
   },
   methods: {
-    async getBooks() {
+    async getNotices() {
       try {
-        const books = await book.getBooks()
-        this.tableData = books
+        const notices = await notice.getNotices()
+        notices.forEach((el) => {
+          // eslint-disable-next-line no-param-reassign
+          el.createTime = dayjs(el.createTime).format('YYYY-MM-DD HH:mm')
+        })
+        this.tableData = notices
       } catch (error) {
         if (error.error_code === 10020) {
           this.tableData = []
@@ -74,9 +79,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await book.delectBook(val.row.id)
+        const res = await notice.delectBook(val.row.id)
         if (res.error_code === 0) {
-          this.getBooks()
+          this.getNotices()
           this.$message({
             type: 'success',
             message: `${res.msg}`,
@@ -89,7 +94,7 @@ export default {
     },
     editClose() {
       this.showEdit = false
-      this.getBooks()
+      this.getNotices()
     },
   },
 }

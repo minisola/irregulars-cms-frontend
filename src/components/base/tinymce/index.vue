@@ -23,6 +23,10 @@ import 'tinymce/plugins/link'
 export default {
   name: 'TinymceEditor',
   props: {
+    editContent: {
+      type: String,
+      default: '',
+    },
     height: {
       type: Number,
       default: 500,
@@ -101,6 +105,11 @@ export default {
   },
   activated() {
     this.tinymceFlag++
+  },
+  methods: {
+    setContent(val) {
+      this.content = val
+    },
   },
 }
 </script>

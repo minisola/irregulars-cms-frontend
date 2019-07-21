@@ -17,8 +17,8 @@
             <el-form-item label="标题" prop="title">
               <el-input size="medium" v-model="form.title" placeholder="请填写公告标题"></el-input>
             </el-form-item>
-            <el-form-item label="标题" prop="title">
-              <tinymce  @change="change" :upload_url="uploadUrl" />
+            <el-form-item label="内容" prop="title">
+              <tinymce ref="editor" @change="change" :upload_url="uploadUrl" />
             </el-form-item>
             <el-form-item class="submit">
               <el-button type="primary" @click="submitForm('form')">保 存</el-button>
@@ -34,7 +34,7 @@
 
 <script>
 import Tinymce from '@/components/base/tinymce'
-import book from '@/models/book'
+import notice from '@/models/notice'
 
 import AppConfig from '@/config/index' // 引入项目配置
 
@@ -54,7 +54,7 @@ export default {
   methods: {
     async submitForm(formName) {
       try {
-        const res = await book.addBook(this.form)
+        const res = await notice.addNotice(this.form)
         if (res.error_code === 0) {
           this.$message.success(`${res.msg}`)
           this.resetForm(formName)
@@ -63,9 +63,13 @@ export default {
         console.log(error)
       }
     },
+    change(val) {
+      this.form.content = val
+    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.$refs.editor.setContent('')
     },
   },
 }
