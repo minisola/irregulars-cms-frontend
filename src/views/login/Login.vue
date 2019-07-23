@@ -56,7 +56,7 @@ export default {
         await User.getToken(nickname, password)
         await this.getInformation()
         this.loading = false
-        this.$router.push('/about')
+        this.$router.push('/notice/list')
         this.$message.success('登录成功')
       } catch (e) {
         this.loading = false

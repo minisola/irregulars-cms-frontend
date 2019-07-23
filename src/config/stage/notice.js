@@ -5,7 +5,7 @@ const noticeRouter = {
   type: 'folder', // 类型: folder, tab, view
   icon: 'iconfont icon-iconset0103',
   filePath: 'views/notice/', // 文件路径
-  order: null,
+  order: 0,
   inNav: true,
   children: [
     {

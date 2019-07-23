@@ -17,21 +17,22 @@
     </div>
 
     <!-- 编辑页面 -->
-    <book-edit v-else @editClose="editClose" :editBookID="editBookID"></book-edit>
+    <edit-page v-else @editClose="editClose" :editNoticeId="editNoticeId"></edit-page>
 
   </div>
 </template>
 
 <script>
-import notice from '@/models/notice'
 import LinTable from '@/components/base/table/lin-table'
 import dayjs from 'dayjs'
-// import BookEdit from './noticeEdit'
+
+import notice from '@/models/notice'
+import editPage from './noticeEdit'
 
 export default {
   components: {
     LinTable,
-    // BookEdit,
+    editPage,
   },
   data() {
     return {
@@ -39,7 +40,7 @@ export default {
       tableData: [],
       operate: [],
       showEdit: false,
-      editBookID: 1,
+      editNoticeId: 1,
     }
   },
   async created() {
@@ -71,7 +72,7 @@ export default {
     handleEdit(val) {
       console.log('val', val)
       this.showEdit = true
-      this.editBookID = val.row.id
+      this.editNoticeId = val.row.id
     },
     handleDelete(val) {
       this.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
@@ -79,7 +80,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await notice.delectBook(val.row.id)
+        const res = await notice.delectNotice(val.row.id)
         if (res.error_code === 0) {
           this.getNotices()
           this.$message({

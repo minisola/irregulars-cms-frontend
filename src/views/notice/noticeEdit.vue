@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="title">
-      <span>修改图书</span>
+      <span>修改公告</span>
       <span class="back" @click="back">
         <i class="iconfont icon-fanhui"></i> 返回
       </span>
@@ -21,23 +21,11 @@
             label-width="100px"
             v-loading="loading"
             @submit.native.prevent>
-            <el-form-item label="书名" prop="title">
-              <el-input size="medium" v-model="form.title" placeholder="请填写书名"></el-input>
+            <el-form-item label="标题" prop="title">
+              <el-input size="medium" v-model="form.title" placeholder="请填写公告标题"></el-input>
             </el-form-item>
-            <el-form-item label="作者" prop="author">
-              <el-input size="medium" v-model="form.author" placeholder="请填写作者"></el-input>
-            </el-form-item>
-            <el-form-item label="封面" prop="image">
-              <el-input size="medium" v-model="form.image" placeholder="请填写封面地址"></el-input>
-            </el-form-item>
-            <el-form-item label="简介" prop="summary">
-              <el-input
-                size="medium"
-                type="textarea"
-                :rows="4"
-                placeholder="请输入简介"
-                v-model="form.summary">
-              </el-input>
+            <el-form-item label="内容" prop="title">
+              <tinymce ref="editor" @change="change" :upload_url="uploadUrl" />
             </el-form-item>
             <el-form-item class="submit">
               <el-button type="primary" @click="submitForm('form')">保 存</el-button>
@@ -52,41 +40,52 @@
 </template>
 
 <script>
-import book from '@/models/book'
+import Tinymce from '@/components/base/tinymce'
+import notice from '@/models/notice'
+
+import AppConfig from '@/config/index' // 引入项目配置
 
 export default {
   props: {
-    editBookID: {
+    editNoticeId: {
       type: Number,
     },
   },
+  components: {
+    Tinymce,
+  },
   data() {
     return {
+      uploadUrl: `${AppConfig.baseUrl}cms/file/`,
       loading: false,
       form: {
         title: '',
-        author: '',
-        summary: '',
-        image: '',
+        content: '',
       },
     }
   },
   async mounted() {
     this.loading = true
-    this.form = await book.getBook(this.editBookID)
+    const res = await notice.getNotice(this.editNoticeId)
+    this.form = res
+    this.$refs.editor.setContent(res.content)
     this.loading = false
   },
   methods: {
     async submitForm() {
-      const res = await book.editBook(this.editBookID, this.form)
+      const res = await notice.editNotice(this.editNoticeId, this.form)
       if (res.error_code === 0) {
         this.$message.success(`${res.msg}`)
         this.$emit('editClose')
       }
     },
+    change(val) {
+      this.form.content = val
+    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.$refs.editor.setContent('')
     },
     back() {
       this.$emit('editClose')
