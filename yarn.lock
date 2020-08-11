@@ -10346,10 +10346,10 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://r.cnpmjs.org/timsort/download/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
 
-tinymce@^5.1.4:
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.1.4.tgz#a45282a68e66d0959bcae19a972f8ae52a358667"
-  integrity sha512-Y7JYnByNF2A4BzR2KIbKEQV90PHZ5OwsU5An1Qj1zbSI8aXCOOhffL04LqlGw5UP/ookaC/V9V41H5XJbp/l9w==
+tinymce@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.4.0.tgz#ae9c784fd36651d4d457be844a18fc138ca4f1f3"
+  integrity sha512-b3j+cUogfOtRt07Zc6iOrOAVosm4hekLtE85lmvjH7tPH7ncAIBv/cpdre9GdfeXSz7TVIJWASVvi4hkOTTh3A==
 
 tmp@^0.0.33:
   version "0.0.33"
